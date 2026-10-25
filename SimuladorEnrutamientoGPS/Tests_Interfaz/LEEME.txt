@@ -1,0 +1,12 @@
+PRUEBAS DE INTERFAZ Y VALIDACIONES
+
+Esta batería de pruebas automatizadas evalúa las funciones de la capa de interfaz y control de entradas:
+- TC-INT-01: Filtrado de dimensiones válidas para el generador DFS (números impares >= 5).
+- TC-INT-02: Manejo de entradas inválidas por teclado (cadenas vacías, letras, números fuera de rango) sin caídas del sistema.
+- TC-INT-03: Prevención de colisiones con obstáculos y verificación de límites en la cuadrícula.
+- TC-INT-04: Representación visual consistente de muros, caminos, origen, meta y ruta en caracteres ASCII.
+- TC-INT-05: Ciclo completo integrado de generación, configuración y resolución de trayectorias.
+
+Ejecución:
+1. Abrir una terminal en esta carpeta.
+2. Ejecutar: dotnet run

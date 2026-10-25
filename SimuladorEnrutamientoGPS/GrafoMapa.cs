@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic; // Importante: Nos permite usar las Pilas (Stack) y Listas
+using System.Text;
 
 namespace SimuladorEnrutamientoGPS
 {
@@ -75,6 +76,53 @@ namespace SimuladorEnrutamientoGPS
 
             // Limpiamos el rastro de visitas para que la Búsqueda de Ruta (BFS) lo encuentre limpio
             ReiniciarVisitados();
+        }
+
+        // Imprime el mapa directamente en la consola
+        public void MostrarMapa(Nodo? inicio = null, Nodo? meta = null, IReadOnlyList<Nodo>? ruta = null)
+        {
+            Console.WriteLine(ObtenerMapaTexto(inicio, meta, ruta));
+        }
+
+        // Retorna la representación visual del mapa en caracteres para imprimir o probar
+        public string ObtenerMapaTexto(Nodo? inicio = null, Nodo? meta = null, IReadOnlyList<Nodo>? ruta = null)
+        {
+            var sb = new StringBuilder();
+            var conjuntoRuta = ruta != null ? new HashSet<Nodo>(ruta) : new HashSet<Nodo>();
+
+            // Encabezado de columnas
+            sb.Append("    ");
+            for (int j = 0; j < Columnas; j++)
+            {
+                sb.Append(j % 10);
+                sb.Append(' ');
+            }
+            sb.AppendLine();
+
+            for (int i = 0; i < Filas; i++)
+            {
+                sb.Append($"{i,3} ");
+                for (int j = 0; j < Columnas; j++)
+                {
+                    Nodo nodo = MatrizNodos[i, j];
+
+                    if (inicio != null && ReferenceEquals(nodo, inicio))
+                        sb.Append('I');
+                    else if (meta != null && ReferenceEquals(nodo, meta))
+                        sb.Append('M');
+                    else if (conjuntoRuta.Contains(nodo))
+                        sb.Append('*');
+                    else if (nodo.EsPared)
+                        sb.Append('#');
+                    else
+                        sb.Append(' ');
+
+                    sb.Append(' ');
+                }
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
 
         // --- MÉTODOS AUXILIARES ---

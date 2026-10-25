@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -11,6 +11,9 @@
     <Compile Remove="QA_Automatizada\**" />
     <EmbeddedResource Remove="QA_Automatizada\**" />
     <None Remove="QA_Automatizada\**" />
+    <Compile Remove="Tests_Interfaz\**" />
+    <EmbeddedResource Remove="Tests_Interfaz\**" />
+    <None Remove="Tests_Interfaz\**" />
   </ItemGroup>
 
 </Project>
