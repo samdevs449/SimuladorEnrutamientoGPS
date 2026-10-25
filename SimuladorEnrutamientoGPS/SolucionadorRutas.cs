@@ -1,21 +1,36 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 
 namespace SimuladorEnrutamientoGPS
 {
     public class SolucionadorRutas
     {
-        // Agregamos "?" para decirle a C# que acepta nulos al inicio
         public List<Nodo>? RutaEncontrada { get; private set; }
 
         public bool BuscarRutaBFS(GrafoMapa mapa, Nodo inicio, Nodo meta)
         {
-            Queue<Nodo> colaFrontera = new Queue<Nodo>();
+            // Reiniciar el estado de todos los nodos antes de cada búsqueda.
+            for (int i = 0; i < mapa.Filas; i++)
+            {
+                for (int j = 0; j < mapa.Columnas; j++)
+                {
+                    mapa.MatrizNodos[i, j].Visitado = false;
+                }
+            }
 
-            // Agregamos "?" al valor del diccionario
-            Dictionary<Nodo, Nodo?> tablaPadres = new Dictionary<Nodo, Nodo?>();
+            // Preparar las estructuras de la búsqueda BFS.
+            Queue<Nodo> colaFrontera = new Queue<Nodo>();
+            Dictionary<Nodo, Nodo?> tablaPadres =
+                new Dictionary<Nodo, Nodo?>();
 
             RutaEncontrada = new List<Nodo>();
+
+            // Validar que el inicio y la meta sean transitables.
+            if (inicio.EsPared || meta.EsPared)
+            {
+                return false;
+            }
 
             colaFrontera.Enqueue(inicio);
             inicio.Visitado = true;
@@ -25,7 +40,8 @@ namespace SimuladorEnrutamientoGPS
             {
                 Nodo actual = colaFrontera.Dequeue();
 
-                if (actual == meta)
+                // Si llegamos a la meta, reconstruimos el camino.
+                if (ReferenceEquals(actual, meta))
                 {
                     RutaEncontrada = ReconstruirCamino(tablaPadres, meta);
                     return true;
@@ -35,7 +51,7 @@ namespace SimuladorEnrutamientoGPS
 
                 foreach (Nodo vecino in vecinos)
                 {
-                    if (!vecino.Visitado)
+                    if (!vecino.EsPared && !vecino.Visitado)
                     {
                         vecino.Visitado = true;
                         tablaPadres[vecino] = actual;
@@ -44,25 +60,50 @@ namespace SimuladorEnrutamientoGPS
                 }
             }
 
+            // No se encontró una ruta.
+            RutaEncontrada.Clear();
             return false;
         }
 
-        private List<Nodo> ObtenerVecinosAccesibles(GrafoMapa mapa, Nodo nodo)
+        private List<Nodo> ObtenerVecinosAccesibles(
+            GrafoMapa mapa,
+            Nodo nodo)
         {
             List<Nodo> vecinos = new List<Nodo>();
+
             int x = nodo.X;
             int y = nodo.Y;
 
-            if (x - 1 >= 0 && !mapa.MatrizNodos[x - 1, y].EsPared) vecinos.Add(mapa.MatrizNodos[x - 1, y]);
-            if (x + 1 < mapa.Filas && !mapa.MatrizNodos[x + 1, y].EsPared) vecinos.Add(mapa.MatrizNodos[x + 1, y]);
-            if (y - 1 >= 0 && !mapa.MatrizNodos[x, y - 1].EsPared) vecinos.Add(mapa.MatrizNodos[x, y - 1]);
-            if (y + 1 < mapa.Columnas && !mapa.MatrizNodos[x, y + 1].EsPared) vecinos.Add(mapa.MatrizNodos[x, y + 1]);
+            if (x - 1 >= 0 &&
+                !mapa.MatrizNodos[x - 1, y].EsPared)
+            {
+                vecinos.Add(mapa.MatrizNodos[x - 1, y]);
+            }
+
+            if (x + 1 < mapa.Filas &&
+                !mapa.MatrizNodos[x + 1, y].EsPared)
+            {
+                vecinos.Add(mapa.MatrizNodos[x + 1, y]);
+            }
+
+            if (y - 1 >= 0 &&
+                !mapa.MatrizNodos[x, y - 1].EsPared)
+            {
+                vecinos.Add(mapa.MatrizNodos[x, y - 1]);
+            }
+
+            if (y + 1 < mapa.Columnas &&
+                !mapa.MatrizNodos[x, y + 1].EsPared)
+            {
+                vecinos.Add(mapa.MatrizNodos[x, y + 1]);
+            }
 
             return vecinos;
         }
 
-        // Agregamos "?" en el diccionario y en la variable actual
-        private List<Nodo> ReconstruirCamino(Dictionary<Nodo, Nodo?> padres, Nodo meta)
+        private List<Nodo> ReconstruirCamino(
+            Dictionary<Nodo, Nodo?> padres,
+            Nodo meta)
         {
             List<Nodo> camino = new List<Nodo>();
             Nodo? actual = meta;

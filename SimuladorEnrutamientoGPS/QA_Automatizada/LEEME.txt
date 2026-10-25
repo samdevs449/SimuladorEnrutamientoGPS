@@ -1,0 +1,13 @@
+BANCO DE PRUEBAS QA - PED941 / PERSONA 2
+
+El paquete incluye una copia del proyecto original en la carpeta Proyecto y un pequeño ejecutable de pruebas en QA_Automatizada.
+
+Para ejecutar:
+1. Tener instalado .NET 10 SDK.
+2. Abrir una terminal en la carpeta QA_Automatizada.
+3. Ejecutar: dotnet run
+
+El ejecutable muestra PASS/FAIL para cinco casos: ruta directa, meta inaccesible, inicio igual a meta, búsqueda consecutiva e integridad de la ruta.
+El TC-04 está diseñado para detectar el posible problema de Visitado persistente. Si falla, conserva el resultado de consola como evidencia y registra el fallo en la matriz Excel.
+
+Este entorno no tiene el comando dotnet disponible, así que no se adjuntan resultados de ejecución ficticios. Los resultados solo son válidos después de ejecutar el programa en tu equipo.

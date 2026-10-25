@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="QA_Automatizada\**" />
+    <EmbeddedResource Remove="QA_Automatizada\**" />
+    <None Remove="QA_Automatizada\**" />
+  </ItemGroup>
+
 </Project>
